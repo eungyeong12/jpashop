@@ -1,5 +1,8 @@
 package jo.jpashop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jo.jpashop.domain.Member;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Member", description = "회원 관련 API")
 @RequiredArgsConstructor
 public class MemberApiController {
 
@@ -40,6 +44,7 @@ public class MemberApiController {
      * @return
      */
     @PostMapping("/api/v2/members")
+    @Operation(summary = "회원 등록 API")
     public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
         Member member = new Member();
         member.setName(request.getName());
@@ -49,13 +54,17 @@ public class MemberApiController {
     }
 
     @Data
+    @Schema(title = "회원 등록 요청 DTO")
     static class CreateMemberRequest {
         @NotEmpty
+        @Schema(description = "회원 이름")
         private String name;
     }
 
     @Data
+    @Schema(title = "회원 등록 응답 DTO")
     static class CreateMemberResponse {
+        @Schema(description = "회원 id")
         private Long id;
 
         public CreateMemberResponse(Long id) {
